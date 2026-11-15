@@ -177,7 +177,7 @@ def publish(path, text):
 
 
 def pipeline(root, count):
-    script = root/'.meta/scripts/pipeline.py'
+    script = root/'.owfa/plugins/domains/personal/pipeline.py'
     for args in (['index'], ['tags'], ['hot', 'other', f'GitHub gh state refreshed ({count} pages).'],
                  ['log', 'other', f'GitHub gh state refreshed ({count} pages).', '--domain', 'github'], ['verify']):
         subprocess.run([sys.executable, '-B', str(script), *args], cwd=root, check=True)
@@ -216,7 +216,7 @@ def main(argv=None):
             return 0
         if not math.isfinite(args.ttl_hours) or not 0 < args.ttl_hours <= 168:
             raise ValueError('TTL must be finite and within (0, 168] hours')
-        if not (root/'.meta/scripts/pipeline.py').is_file():
+        if not (root/'.owfa/plugins/domains/personal/pipeline.py').is_file():
             raise ValueError('Instance pipeline not found; deploy the framework before refresh')
         executable = shutil.which(args.gh)
         if not executable:

@@ -71,3 +71,4 @@ An agent may create `connector-account.md` or `repos/<owner>/<repo>.connector.md
 ## Changelog
 
 - 0.1 2026-10-12: establish cache-first GitHub domain, gh collector/offline reader, connector recording contract and local audit.
+- 0.1 2026-11-16: path rebase post-.meta retirement — pipeline, kernel and skill paths moved to the `.owfa` layout (PKG 0.2 -> 0.3).
