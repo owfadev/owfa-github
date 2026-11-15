@@ -12,9 +12,9 @@ Resolve the host and account from the user or existing `wiki/github/` pages. Do 
 From the instance root (Python 3 and official `gh` required only for refresh):
 
 ```text
-python .meta/plugins/domains/github/github/scripts/state.py show --host github.com --account LOGIN
-python .meta/plugins/domains/github/github/scripts/state.py show --host github.com --account LOGIN --repo OWNER/REPO
-python .meta/plugins/domains/github/github/scripts/state.py refresh --host github.com --account LOGIN --repo OWNER/REPO
+python .owfa/plugins/domains/github/github/scripts/state.py show --host github.com --account LOGIN
+python .owfa/plugins/domains/github/github/scripts/state.py show --host github.com --account LOGIN --repo OWNER/REPO
+python .owfa/plugins/domains/github/github/scripts/state.py refresh --host github.com --account LOGIN --repo OWNER/REPO
 ```
 
 `--repo` may repeat during refresh; `--ttl-hours` defaults to 24. `--root PATH` selects an instance explicitly; otherwise the script's owning instance is used, regardless of the shell's working directory. `--gh PATH` selects a known official executable when PATH is stale. A fresh descriptive answer needs no call to GitHub. `show` marks stale observations and returns cached data without launching gh; it does not claim the account is currently authenticated. A refresh failure leaves prior snapshots unchanged and reports no raw API error body.
@@ -42,14 +42,14 @@ If gh is absent or login has expired, keep the cache available, explain the exac
 <!-- /usage:trust -->
 
 <!-- usage:index -->
-- Post-write rebuild (mechanical, automatic): `python .meta/scripts/pipeline.py index` (index — overflow-offloading scheme, including deletion of obsolete old indexes after merge-back) and the same script's `tags` (tag reverse index); LLMs never hand-write indexes
+- Post-write rebuild (mechanical, automatic): `python .owfa/plugins/domains/personal/pipeline.py index` (index — overflow-offloading scheme, including deletion of obsolete old indexes after merge-back) and the same script's `tags` (tag reverse index); LLMs never hand-write indexes
 <!-- /usage:index -->
 
 <!-- usage:hot -->
-- Writing entries (mechanical, automatic): `python .meta/scripts/pipeline.py hot <type> "<wikilink + one-sentence essence>"` (type value set same as log, see the log block of the AGENTS injection region); window eviction and truncation are performed by the script
+- Writing entries (mechanical, automatic): `python .owfa/plugins/domains/personal/pipeline.py hot <type> "<wikilink + one-sentence essence>"` (type value set same as log, see the log block of the AGENTS injection region); window eviction and truncation are performed by the script
 <!-- /usage:hot -->
 
 <!-- usage:log -->
-- Writing lines (mechanical, automatic): `python .meta/scripts/pipeline.py log <type> "<one sentence>" [--domain <domain>]` (type value set in the log block of the AGENTS injection region; domain tag = domain-plugin name such as bb/lark/vault, mandatory for in-domain transactions, omitted for framework and native transactions); rolling window and archiving are performed by the script
+- Writing lines (mechanical, automatic): `python .owfa/plugins/domains/personal/pipeline.py log <type> "<one sentence>" [--domain <domain>]` (type value set in the log block of the AGENTS injection region; domain tag = domain-plugin name such as bb/lark/vault, mandatory for in-domain transactions, omitted for framework and native transactions); rolling window and archiving are performed by the script
 <!-- /usage:log -->
 <!-- cmd-inject:end -->

@@ -6,7 +6,7 @@ depends:
   - wiki
   - trust
   - log
-updated: 2026-10-12
+updated: 2026-11-16
 commands:
   - github-state
 attachment:
