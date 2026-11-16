@@ -183,10 +183,24 @@ def pipeline(root, count):
         subprocess.run([sys.executable, '-B', str(script), *args], cwd=root, check=True)
 
 
+def _default_root():
+    # marker-based (kernel-home F2 flavor): walk up from this script until a
+    # directory containing .owfa/ is found — depth-agnostic, so a shallow
+    # checkout (repo root) and the installed depth both resolve (issue #4)
+    d = Path(__file__).resolve().parent
+    for _ in range(12):
+        if (d / ".owfa").is_dir():
+            return d
+        if d.parent == d:
+            break
+        d = d.parent
+    return None
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=['show', 'refresh'])
-    parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[6])
+    parser.add_argument('--root', type=Path, default=None)
     parser.add_argument('--host', default='github.com')
     parser.add_argument('--account', required=True)
     parser.add_argument('--repo', action='append', default=[])
@@ -196,7 +210,10 @@ def main(argv=None):
     try:
         host, account = component(args.host), component(args.account)
         repos = list(dict.fromkeys(repo_name(x) for x in args.repo))
-        root = args.root.resolve()
+        root = (args.root if args.root is not None else _default_root())
+        if root is None:
+            parser.error("no workspace root found upward of this script (no .owfa/ marker); pass --root")
+        root = root.resolve()
         if args.action == 'show':
             base = Path('wiki/github')/host/account
             paths = [safe_path(root, base/'repos'/(name+'.gh.md')) for name in repos] if repos else [safe_path(root, base/'gh-account.md')]
